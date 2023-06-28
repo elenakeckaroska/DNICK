@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block breadcrumps %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <div class="pl-5  container">
+            <ol class="breadcrumb pl-3 text-muted">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Почетна</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'details'%}">Детали</a></li>
+
+            </ol>
+        </div>
+    </nav>
+{% endblock breadcrumps %}
+{% block content %}
+
+    <div class="container px-4 d-flex align-items-center" style="background-color: #E5C3A6; height: 35rem">
+        <div class="row">
+            <img class="col-4" src="{{ a.mainImage }}">
+            <img class="col-4" src="{{ a.secondImage }}">
+            <div class="text-center col" style="padding-top: 10rem">
+                <h5 style="color:#2B0320;">Име: <span class="fst-italic fw-bold">{{ a.name }}</span></h5>
+                <h6 style="color:#2B0320;">Цена: {{ a.price }}</h6>
+                <h6 style="color:#2B0320;">Боја: {{ a.color }}</h6>
+                <h6 style="color:#2B0320;">Категорија: {{ a.category }}</h6>
+
+                <h6 style="color:#2B0320;">Достапна количина: {{ a.quantity }}</h6>
+                {% if not user.is_superuser %}
+                    <div class="button rounded-pill border-0 mt-5 py-1 px-2 text-light container"
+                         style="background-color: #784D59; width: 15rem">
+
+                        <form method="post" action="{% url 'sale' %}">
+                            {% csrf_token %}
+
+                            <input type="hidden" value="{{ a.name }}" name="name" id="name">
+
+                            <input class="border-0" type="submit" style="background-color: transparent; color: #F6E4FF "
+                                   value="Додади во кошничка" onclick="validateClick(event)">
+
+                        </form>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+
+    </div>
+      <div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="background-color: #E5C3A6; height: 5rem; margin-top: 10rem ">
+        <p class="tex-center">КОНТАКТ: unique@gmail.com +389 75 301 213
+        </p>
+    </div>
+    <script>
+        var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+        function validateClick(event) {
+            if (!isAuthenticated) {
+                event.preventDefault();
+                showAlert("Ве молиме регистрирајте се / најавете се за да продолжите со купување", "#855662");
+            } else {
+                showAlert("Производот успешно е додаден во кошничката", "#9E7276");
+            }
+        }
+
+
+        function showAlert(message, color) {
+            var alertBox = document.createElement("div");
+            alertBox.style.backgroundColor = color;
+            alertBox.style.color = "white";
+            alertBox.style.padding = "10px";
+            alertBox.style.borderRadius = "5px";
+            alertBox.textContent = message;
+
+            // Center the alert box horizontally and vertically
+            alertBox.style.position = "fixed";
+            alertBox.style.top = "50%";
+            alertBox.style.left = "50%";
+            alertBox.style.transform = "translate(-50%, -50%)";
+            alertBox.style.zIndex = "9999";
+
+            document.body.appendChild(alertBox);
+
+            setTimeout(function () {
+                alertBox.remove();
+            }, 3000);
+        }
+
+    </script>
+{% endblock %}
+
+</body>
+</html>

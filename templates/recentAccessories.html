@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recent Accessories</title>
+    <style>
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .image-container img {
+            display: block;
+
+        }
+
+        .image-container .hover-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .image-container:hover .hover-image {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block breadcrumps %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <div class="pl-5  container">
+            <ol class="breadcrumb pl-3 text-muted">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Почетна</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Најнови производи</a></li>
+
+            </ol>
+        </div>
+    </nav>
+{% endblock breadcrumps %}
+
+{% block content %}
+      </div>
+        <div class="container" style=" padding-bottom: 15rem;">
+            <div class="row mt-4 d-flex justify-content-evenly">
+                {% for a in accessories %}
+
+                    <div class="col-3 p-0 mx-2 mt-3">
+                        <div class="card">
+                            <div class="image-container">
+                                <img src="{{ a.mainImage }}" class="card-img-top p-1 px-2" style="height: 19rem">
+                                <img src="{{ a.secondImage }}" class="card-img-top p-1 px-2 hover-image"
+                                     style="height: 19rem">
+                            </div>
+
+                            <div class="card-body text-center">
+                                <h6 class="card-title fw-bold">{{ a.name }}</h6>
+                                <p class="card-text">{{ a.price }} ден. </p>
+                                {% if a.quantity <= 0 %}
+                                    <p class="card-text">Достапна количина: 0 ден. </p>
+                                {% else %}
+                                    <p class="card-text">Достапна количина: {{ a.quantity }} </p>
+                                {% endif %}
+                                <p class="card-text">Пуштени во продажба од: {{ a.datetime.date }} </p>
+                                {% if a.quantity > 0 %}
+                                    <button class="button rounded-pill border border-light py-2 px-3 text-light"
+                                            style="background-color: #784D59; ">
+
+                                        <form method="post" action="{% url 'details' %}">
+                                            {% csrf_token %}
+
+                                            <input type="hidden" value="{{ a.name }}" name="name" id="name">
+
+
+                                            <input class="border-0" type="submit"
+                                                   style="background-color: transparent;color: #F6E4FF "
+                                                   value="ВИДИ ПОВЕЌЕ">
+                                        </form>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                {% endfor %}
+            </div>
+        </div>
+      <div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="background-color: #E5C3A6; height: 5rem; margin-top: 10rem ">
+        <p class="tex-center">КОНТАКТ: unique@gmail.com +389 75 301 213
+        </p>
+    </div>
+{% endblock %}
+</body>
+</html>

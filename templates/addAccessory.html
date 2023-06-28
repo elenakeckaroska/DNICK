@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Accessory</title>
+    <style>
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            padding: 0.4rem;
+        }
+
+        .form-group input {
+            margin: auto;
+
+            width: 15rem;
+            height: 2.1rem;
+        {#margin-bottom: 1rem;#} background-color: #E8C8A8;
+            border-radius: 2px;
+            border: solid 2px #2B0320;
+
+        }
+
+        label {
+            margin: auto;
+            font-size: 1em;
+            color: #2B0320;
+        }
+
+        option, select {
+            background-color: #E8C8A8;
+        }
+
+        textarea {
+            width: 15rem;
+            height: 2.5rem;
+            background-color: transparent;
+            margin-left: 12rem;
+            border: solid 2px #2B0320;
+        }
+    </style>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block breadcrumps %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <div class="pl-5  container">
+            <ol class="breadcrumb pl-3 text-muted">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Почетна</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'addAccessory' %}">Додавање на нов производ</a></li>
+            </ol>
+        </div>
+    </nav>
+{% endblock breadcrumps %}
+
+{% block content %}
+    <div class="container" style="background-color: #E5C3A6;">
+        <div class="container" style="height: 30rem; padding-top: 5rem">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_name">Име на производот</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description">Опис на производот</label>
+                            <div class="w-50 ml-5" style="    margin-left: 12rem;">{{ form.description }}</div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="id_color">Боја на производот</label>
+                            {{ form.color }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_quantity">Количина на производот</label>
+                            {{ form.quantity }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_price">Цена на производот</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_category">Категорија на производот</label>
+                            <div class="mx-auto"
+                                 style="background-color: transparent">                            {{ form.category }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_mainImage">Главна слика</label>
+                            {{ form.mainImage }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 pb-5">
+                        <div class="form-group">
+                            <label for="id_secondImage">Споредна слика</label>
+                            {{ form.secondImage }}
+                        </div>
+                    </div>
+                </div>
+                <button class="container button rounded-pill border-0 py-1 px-3 mt-2 text-light"
+                        style="background-color: #784D59;width: 12rem; margin-left: 34rem;">Додади го производот
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+</body>
+</html>

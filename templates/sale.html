@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        .svg-button {
+            position: relative;
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: transparent;
+            border: none;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .svg-button .svg-icon {
+            position: absolute;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .svg-button:hover {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+{% extends 'base.html' %}
+{% block breadcrumps %}
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <div class="pl-5  container">
+            <ol class="breadcrumb pl-3 text-muted">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Почетна</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'sale' %}">Корисничка кошничка</a></li>
+            </ol>
+        </div>
+    </nav>
+{% endblock breadcrumps %}
+<h3 class="text-center">Во Вашата картичка се додадени следните производи:</h3>
+
+{% block content %}
+    <div class="container pt-5" style="background-color: #E5C3A6; height: 35rem">
+        <div class="container">
+            <div class="row">
+                {% if total != 0 %}
+                    {% for a in accessories %}
+                        {% if a.accessory.name is not None and a.numOfPieces > 0 and a.numOfPieces is not None %}
+
+                            <div class="d-flex align-items-center my-3"
+                                 style=" background-color: #2B0320; border-radius: 2px;">
+                                <div class="col-2 p-1">
+                                    <img src="{{ a.accessory.mainImage }}" style="width: 5rem; height: 5rem">
+                                </div>
+
+                                <div class="col-5">
+                                    <span class="text-light">{{ a.accessory.name }}</span>
+                                </div>
+
+                                <div class="col-1 text-light">
+                                    {{ a.numOfPieces }}
+                                </div>
+                                <div class="col-1">
+                                    <form method="post" action="{% url 'quantity' %}">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" value="{{ a.accessory.name }}" name="name" id="name">
+
+                                        <button type="submit" class="svg-button">
+                                    <span class="svg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor"
+                                                                class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                                                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                                                                </svg></span>
+                                        </button>
+                                    </form>
+
+                                    <form method="post" action="{% url 'quantityDecrease' %}">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" value="{{ a.accessory.name }}" name="name" id="name">
+
+                                        <button type="submit" class="svg-button">
+                                    <span class="svg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor"
+                                                                class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                                            </svg></span>
+                                        </button>
+                                    </form>
+                                </div>
+
+
+                                <div class="col-2 text-light">
+                                    {% widthratio a.accessory.price 1 a.numOfPieces %}
+                                </div>
+                                <div class="col-1">
+                                    <form method="post" action="{% url 'deleteSale' %}">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" value="{{ a.accessory.name }}" name="name" id="name">
+
+                                        <button type="submit" class="svg-button">
+                                    <span class="svg-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="white" class="bi bi-trash"
+                                                                viewBox="0 0 16 16">
+                                                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                                    </svg></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center mt-5">
+                    <p class="display-6">Немате внесено продукти во шопинг картичката!</p>
+                    </div>
+                {% endif %}
+
+        </div>
+    </div>
+
+    {% if  total != 0 %}
+        <div class="container d-flex justify-content-end mt-3"><h4 class="fst-italic "> Вкупно: {{ total }} ден.</h4>
+        </div>
+        <div class="container d-flex justify-content-center mt-3"><a href="{% url 'process_payment' %}"
+                                                                     class="container button rounded-pill border-0 py-1 px-3 mt-2 text-light text-decoration-none text-center"
+                                                                     style="background-color: #784D59;width: 9rem; margin-left: 34rem; font-size: 1.2rem;">Кон
+            наплата</a></div>
+    {% endif %}
+{% endblock %}
+
+</body>
+</html>
+
+

@@ -53,7 +53,7 @@ ROOT_URLCONF = 'djangoProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'unique_eshop', 'templates')],
+        # 'DIRS': [os.path.join(BASE_DIR, 'unique_eshop', 'templates')],
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -61,14 +61,14 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                "dynamic_breadcrumbs.context_processors.breadcrumbs",
+                # "dynamic_breadcrumbs.context_processors.breadcrumbs",
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'djangoProject.wsgi.application'
+# WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -125,6 +125,6 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = "/home"
 
-APPEND_SLASH=False
+# APPEND_SLASH=False
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

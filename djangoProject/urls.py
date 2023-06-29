@@ -34,7 +34,7 @@ urlpatterns = [
                   path('quantity/', quantity, name='quantity'),
                   path('addAccessory/', addAccessory, name='addAccessory'),
                   path('search_products', search_products, name='search_products'),
-                  path('process-payment/', process_payment, name='process_payment'),
+                  path('process_payment/', process_payment, name='process_payment'),
                   path('home', home, name='home'),
                   path('', home, name='home')
 
